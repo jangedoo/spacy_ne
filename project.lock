@@ -1,0 +1,13 @@
+extract-corpus:
+  cmd: python -m spacy run extract-corpus
+  script:
+    - gzip -kdf assets/ne_dedup.txt.gz
+    - mv assets/ne_dedup.txt corpus/ne_dedup.txt
+  deps:
+    - path: assets/ne_dedup.txt.gz
+      md5: a6db7ce22bb8d635e7525723ba1b2a40
+  outs:
+    - path: corpus/ne_dedup.txt
+      md5: 8a3a46b5f4b6f2ef8f20b1240f498c52
+  spacy_version: 3.3.0
+  spacy_git_version: Unknown

@@ -1,0 +1,28 @@
+title: "Nepali Spacy Model"
+description: "Training config generated with `spacy init config -l ne -o efficiency -F base_config.cfg`"
+directories: ["assets", "corpus", "pretrained_models"]
+
+# Assets
+assets:
+  - dest: "assets/ne_dedup.txt.gz"
+    url: "https://s3.amazonaws.com/datasets.huggingface.co/oscar/1.0/unshuffled/deduplicated/ne/ne_dedup.txt.gz"
+    checksum: "a6db7ce22bb8d635e7525723ba1b2a40"
+    description: "Nepali corpus from OSCAR dataset"
+
+commands:
+  - name: "extract-corpus"
+    help: "Extract the files from compressed archive"
+    script:
+      - "gzip -kdf assets/ne_dedup.txt.gz"
+      - "mv assets/ne_dedup.txt corpus/ne_dedup.txt"
+    deps:
+      - "assets/ne_dedup.txt.gz"
+    outputs:
+      - "corpus/ne_dedup.txt"
+
+  - name: "pretrain"
+    help: "Pretrain the language model"
+    deps:
+      - "corpus/ne_dedup.txt"
+    script:
+      - "spacy pretrain --code scripts/functions.py base_config.cfg pretrained_models/ --paths.raw_text corpus/ne_dedup.txt"
